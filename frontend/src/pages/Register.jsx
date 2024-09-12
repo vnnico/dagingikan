@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import * as apiClient from "../api-client";
 import { useAppContext } from "../context/AppContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const {
@@ -147,12 +147,12 @@ const Register = () => {
         </form>
         <p className="text-center text-gray-600 text-xs mt-4">
           Already have an account?{" "}
-          <a
+          <Link
             className="text-blue-500 hover:text-blue-700 font-bold"
-            href="/login"
+            to="/login"
           >
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>

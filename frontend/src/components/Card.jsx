@@ -3,27 +3,24 @@ import { BsCart4 } from "react-icons/bs";
 
 const Card = ({ fish }) => {
   return (
-    <div className="container border-2 rounded-2xl w-full overflow-hidden cursor-pointer">
-      <div className="container w-full h-3/5">
+    <div className="container border-2 rounded-2xl w-full overflow-hidden cursor-pointer ">
+      <div className="container w-full h-3/5 ">
         <img
           src={`/images/${fish.image}`}
           class="w-full bg-center bg-cover h-full"
           alt={fish.name}
         />
       </div>
-      <div className="p-2">
-        <p className="text-2xl text-black">{fish.name}</p>
-        <p className="text-1xl text-gray-500">{fish.weight}g</p>
-        <p className="text-1xl text-red-700 font-bold">Rp.{fish.price}</p>
+      <div className="p-2 flex flex-col">
+        <p className="md:text-xl text-lg text-black">{fish.name}</p>
+        <p className="md:text-lg text-md text-gray-500">{fish.weight}g</p>
+        <p className="md:text-lg text-md text-red-700 font-bold">
+          Rp.{fish.price}
+        </p>
         {/*  bikin jadi goyang cartnya kalo dihover */}
-        <div className="container flex border-2 rounded-lg  text-center ">
-          <Link
-            to="/carts"
-            className="flex text-1xl font-bold text-black  hover:text-yellow-300 "
-          >
-            <BsCart4 className="hidden"></BsCart4>
-            <p className="text-1xl text-black">Add to Cart</p>
-          </Link>
+        <div className="container flex border-2 rounded-lg  text-center justify-center gap-2 mt-2 mb-2 md:py-2 mb-12 lg:mb-2 hover:shadow-md font-semibold">
+          <BsCart4 className="text-lg mt-1"></BsCart4>
+          <p className="md:text-lg text-md">Add to Cart</p>
         </div>
       </div>
     </div>
