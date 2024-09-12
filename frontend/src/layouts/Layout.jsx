@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 
 const Layout = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen ">
       <Header></Header>
       <Hero></Hero>
       {/* flex-1 akan membuat bagian container memenuhi semua space kosong yang available */}

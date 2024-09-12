@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "react-query";
+import { BsBoxArrowRight } from "react-icons/bs";
 import { useAppContext } from "../context/AppContext";
 import * as apiClient from "../api-client";
 
@@ -21,9 +22,9 @@ const LogoutButton = () => {
   return (
     <button
       onClick={onClick}
-      className="flex items-center text-3xl text-white px-3 font-bold hover:text-yellow-300 "
+      className="flex items-center text-xl md:text-3xl text-white px-3 font-bold hover:text-yellow-300 "
     >
-      Log Out
+      <BsBoxArrowRight />
     </button>
   );
 };
