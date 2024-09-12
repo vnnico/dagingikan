@@ -7,12 +7,11 @@ import { useState } from "react";
 
 const Header = () => {
   const { isLoggedIn } = useAppContext();
-  const [cart, setCart] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const toggleCart = () => {
-    setCart(!cart);
+    setOpen(!open);
   };
-
   return (
     <div className="bg-gray-950 py-6">
       <div className="container mx-auto flex justify-between">
@@ -53,7 +52,7 @@ const Header = () => {
           )}
         </span>
       </div>
-      <Cart isOpen={cart} setOpen={setCart}></Cart>
+      <Cart open={open} setOpen={setOpen}></Cart>
     </div>
   );
 };
