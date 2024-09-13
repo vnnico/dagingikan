@@ -10,9 +10,11 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { BsPlusLg, BsDashLg } from "react-icons/bs";
 import { useAppContext } from "../context/AppContext";
+import Modal from "./Modal";
 
 export default function Cart() {
   const { carts, open, setOpen, addCart, removeCart } = useAppContext();
+
   const [total, setTotal] = useState(0);
 
   useEffect(() => {

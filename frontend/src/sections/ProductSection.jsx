@@ -1,6 +1,7 @@
 import Card from "../components/Card";
 import { useQuery } from "react-query";
 import * as apiClient from "../api-client";
+import Modal from "../components/Modal";
 
 const ProductSection = () => {
   const { data } = useQuery("fishes", apiClient.getAllFish);
@@ -10,6 +11,7 @@ const ProductSection = () => {
         {data?.map((fish) => (
           <Card key={fish._id} fish={fish}></Card>
         ))}
+        <Modal></Modal>
       </div>
     </div>
   );

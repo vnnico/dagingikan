@@ -3,7 +3,8 @@ import { BsCart4 } from "react-icons/bs";
 import { useAppContext } from "../context/AppContext";
 
 const Card = ({ fish }) => {
-  const { addCart, toggleCart } = useAppContext();
+  const { addCart, toggleCart, toggleModal, isLoggedIn } = useAppContext();
+
   return (
     <div className="container border-2 rounded-2xl w-full overflow-hidden cursor-pointer ">
       <div className="container w-full h-3/5 ">
@@ -25,7 +26,11 @@ const Card = ({ fish }) => {
         {/*  bikin jadi goyang cartnya kalo dihover */}
         <button
           className="container flex border-2 rounded-lg  text-center justify-center gap-2 mt-2 mb-2 md:py-2 mb-12 lg:mb-2 hover:shadow-md font-semibold"
-          onClick={() => addCart({ ...fish, id: fish._id }, toggleCart)}
+          onClick={
+            isLoggedIn
+              ? () => addCart({ ...fish, id: fish._id }, toggleCart)
+              : () => toggleModal()
+          }
         >
           <BsCart4 className="text-lg mt-1"></BsCart4>
           <p className="md:text-lg text-md">Add to Cart</p>

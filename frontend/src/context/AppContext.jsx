@@ -10,9 +10,14 @@ export const AppContextProvider = ({ children }) => {
   const [toast, setToast] = useState(undefined);
   const [carts, setCart] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const toggleCart = () => {
     setOpen(!open);
+  };
+
+  const toggleModal = () => {
+    setOpenModal(!openModal);
   };
 
   const addCart = (fish, cb = null) => {
@@ -68,8 +73,11 @@ export const AppContextProvider = ({ children }) => {
         isLoggedIn: !isError,
         carts,
         toggleCart,
+        toggleModal,
         open,
         setOpen,
+        openModal,
+        setOpenModal,
         addCart,
         removeCart,
       }}
