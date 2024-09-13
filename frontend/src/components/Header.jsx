@@ -6,12 +6,8 @@ import Cart from "../components/Cart";
 import { useState } from "react";
 
 const Header = () => {
-  const { isLoggedIn } = useAppContext();
-  const [open, setOpen] = useState(false);
+  const { isLoggedIn, toggleCart } = useAppContext();
 
-  const toggleCart = () => {
-    setOpen(!open);
-  };
   return (
     <div className="bg-gray-950 py-6 md:text-3xl max-md:px-3 text-xl ">
       <div className="container mx-auto flex justify-between">
@@ -52,7 +48,7 @@ const Header = () => {
           )}
         </span>
       </div>
-      <Cart open={open} setOpen={setOpen}></Cart>
+      <Cart></Cart>
     </div>
   );
 };
