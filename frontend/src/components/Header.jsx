@@ -6,12 +6,8 @@ import Cart from "../components/Cart";
 import { useState } from "react";
 
 const Header = () => {
-  const { isLoggedIn } = useAppContext();
-  const [open, setOpen] = useState(false);
+  const { isLoggedIn, toggleCart, carts } = useAppContext();
 
-  const toggleCart = () => {
-    setOpen(!open);
-  };
   return (
     <div className="bg-gray-950 py-6 md:text-3xl max-md:px-3 text-xl ">
       <div className="container mx-auto flex justify-between">
@@ -29,10 +25,17 @@ const Header = () => {
                 <BsCardText></BsCardText>
               </Link>
               <button
-                className="flex items-center  text-white px-3 font-bold hover:text-yellow-300 "
+                className="flex items-center  text-white px-3 font-bold hover:text-yellow-300 relative "
                 onClick={toggleCart}
               >
                 <BsCart4></BsCart4>
+                {carts && carts.length > 0 && (
+                  <div className=" absolute top-0 right-1 text-xs flex">
+                    <p className="bg-red-500 min-w-[16px] min-h-[13px] rounded ">
+                      {carts.length}
+                    </p>
+                  </div>
+                )}
               </button>
               <Link
                 to="/profile"
@@ -52,7 +55,7 @@ const Header = () => {
           )}
         </span>
       </div>
-      <Cart open={open} setOpen={setOpen}></Cart>
+      <Cart></Cart>
     </div>
   );
 };

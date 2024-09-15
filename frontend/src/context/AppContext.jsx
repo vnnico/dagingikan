@@ -1,18 +1,65 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useContext } from "react";
 import Toast from "../components/Toast";
 import { useQuery } from "react-query";
 import * as apiClient from "../api-client";
 
 const AppContext = createContext();
-/*
-Mengapa Menggunakan invalidateQueries setelah useMutation
-Pembaruan Status: Setelah operasi mutasi (seperti sign out), status atau data di server berubah. Untuk memastikan data lokal aplikasi tetap sinkron dengan server, kita menggunakan invalidateQueries untuk menginformasikan react-query bahwa data yang di-cache tidak valid lagi dan perlu di-fetch ulang.
-Validasi Token Ulang: Dengan meng-invalidate query validateToken, aplikasi akan memeriksa ulang token pengguna saat berikutnya query ini dijalankan. Ini memastikan bahwa aplikasi mencerminkan status login yang benar setelah pengguna melakukan sign out.
-*/
 
 export const AppContextProvider = ({ children }) => {
   const [toast, setToast] = useState(undefined);
+  const [carts, setCart] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  const toggleCart = () => {
+    setOpen(!open);
+  };
+
+  const toggleModal = () => {
+    setOpenModal(!openModal);
+  };
+
+  const addCart = (fish, cb = null) => {
+    const cart = carts.find((cart) => cart.id === fish.id);
+    if (cart) {
+      setCart(
+        carts.map((cart) =>
+          cart.id === fish.id ? { ...cart, quantity: cart.quantity + 1 } : cart
+        )
+      );
+    } else {
+      setCart([
+        ...carts,
+        {
+          id: fish._id,
+          name: fish.name,
+          weight: fish.weight,
+          price: fish.price,
+          quantity: 1,
+          imageSrc: fish.image,
+          imageAlt: fish.name,
+        },
+      ]);
+    }
+    cb ? cb() : null;
+  };
+
+  const removeCart = (fishCart) => {
+    const cart = carts.find((cart) => cart.id === fishCart.id);
+    if (cart.quantity === 1) {
+      setCart(carts.filter((cart) => cart.id !== fishCart.id));
+    } else {
+      setCart(
+        carts.map((cart) =>
+          cart.id === fishCart.id
+            ? { ...cart, quantity: cart.quantity - 1 }
+            : cart
+        )
+      );
+    }
+  };
+
   const { isError } = useQuery("validateToken", apiClient.validateToken, {
     retry: false,
   });
@@ -24,6 +71,15 @@ export const AppContextProvider = ({ children }) => {
           setToast(toastMessage);
         },
         isLoggedIn: !isError,
+        carts,
+        toggleCart,
+        toggleModal,
+        open,
+        setOpen,
+        openModal,
+        setOpenModal,
+        addCart,
+        removeCart,
       }}
     >
       {toast && (
