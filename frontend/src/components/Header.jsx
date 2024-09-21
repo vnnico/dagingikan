@@ -3,7 +3,6 @@ import { BsCardText, BsCart4, BsFillPersonFill } from "react-icons/bs";
 import { useAppContext } from "../context/AppContext";
 import LogoutButton from "./LogoutButton";
 import Cart from "../components/Cart";
-import { useState } from "react";
 
 const Header = () => {
   const { isLoggedIn, toggleCart, carts } = useAppContext();

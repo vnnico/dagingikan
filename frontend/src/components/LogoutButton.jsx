@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "react-query";
 import { BsBoxArrowRight } from "react-icons/bs";
 import { useAppContext } from "../context/AppContext";
-import * as apiClient from "../api-client";
+import * as authenticationAPI from "../api/authentication";
 
 const LogoutButton = () => {
   const queryClient = useQueryClient();
   const { showToast } = useAppContext();
-  const mutation = useMutation(apiClient.logout, {
+  const mutation = useMutation(authenticationAPI.logout, {
     onSuccess: async () => {
       await queryClient.invalidateQueries("validateToken");
       showToast({ message: "Sign Out!", type: "SUCCESS" });

@@ -4,6 +4,7 @@ import upload from "../middleware/multer.js";
 const router = express.Router();
 
 router.get("/", fishControllers.getAllFish);
+router.get("/:fishId", fishControllers.getFish);
 router.post("/", upload.single("image"), fishControllers.addFish);
 
 export default router;

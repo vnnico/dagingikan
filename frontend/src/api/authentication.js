@@ -58,16 +58,3 @@ export const logout = async () => {
 
   return response.json();
 };
-
-export const getAllFish = async () => {
-  const response = await fetch(`${API_URL}/api/fish`, {
-    include: "credentials",
-  });
-
-  const responseBody = response.json();
-  if (!response.ok) {
-    throw new Error("Failed to fetch");
-  }
-
-  return responseBody;
-};

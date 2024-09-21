@@ -5,7 +5,23 @@ export const getAllFish = async (req, res) => {
     const fishes = await Fish.find({});
     return res.status(200).json(fishes);
   } catch (error) {
-    return res.status(500).json({ message: "Failed to fetch" });
+    return res
+      .status(500)
+      .json({ message: "Failed to fetch", error: error.message });
+  }
+};
+
+export const getFish = async (req, res) => {
+  try {
+    const { fishId } = req.params;
+    const fish = await Fish.findById(fishId);
+    if (!fish) return res.status(404).json({ message: "Item not found" });
+
+    return res.status(200).json({ message: "Item Found", fish });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Failed to fetch", error: error.message });
   }
 };
 

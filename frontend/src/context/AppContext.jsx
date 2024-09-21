@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { useContext } from "react";
 import Toast from "../components/Toast";
 import { useQuery } from "react-query";
-import * as apiClient from "../api-client";
+import * as authenticationAPI from "../api/authentication";
 
 const AppContext = createContext();
 
@@ -60,9 +60,13 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  const { isError } = useQuery("validateToken", apiClient.validateToken, {
-    retry: false,
-  });
+  const { isError } = useQuery(
+    "validateToken",
+    authenticationAPI.validateToken,
+    {
+      retry: false,
+    }
+  );
 
   return (
     <AppContext.Provider
