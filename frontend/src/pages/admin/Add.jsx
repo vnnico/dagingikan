@@ -1,19 +1,53 @@
-import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { PhotoIcon } from "@heroicons/react/24/solid";
+import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import * as fishAPI from "../../api/fish";
+import { useAppContext } from "../../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const Add = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const navigate = useNavigate();
+  const { showToast } = useAppContext();
+
+  const mutation = useMutation(fishAPI.addFish, {
+    onSuccess: async () => {
+      showToast({ message: "Successfully adding new item", type: "SUCCESS" });
+      navigate("/admin");
+    },
+    onError: (error) => {
+      showToast({ message: error.message, type: "ERROR" });
+    },
+  });
+
+  const postData = (data) => {
+    mutation.mutate(data);
+  };
   return (
     <div className=" flex flex-col">
       <h1 className="text-2xl font-semibold mb-3">Insert New Item</h1>
-      <form>
+      <form onSubmit={handleSubmit(postData)} encType="multipart/form-data">
         <div className="flex flex-col">
           <label className="text-lg" htmlFor="name">
             Name
           </label>
           <input
             type="text"
+            id="name"
             className="border border-black rounded"
-            name="name"
+            placeholder="Name"
+            {...register("name", {
+              required: "Name is required",
+            })}
           />
+          {errors.name && (
+            <span className="text-red-500">{errors.name.message}</span>
+          )}
         </div>
         <div className="flex flex-col">
           <label className="text-lg" htmlFor="weight">
@@ -21,9 +55,16 @@ const Add = () => {
           </label>
           <input
             type="number"
+            id="weight"
+            placeholder="Weight"
             className="border border-black rounded"
-            name="weight"
+            {...register("weight", {
+              required: "Weight is required",
+            })}
           />
+          {errors.weight && (
+            <span className="text-red-500">{errors.weight.message}</span>
+          )}
         </div>
         <div className="flex flex-col">
           <label className="text-lg" htmlFor="price">
@@ -31,9 +72,16 @@ const Add = () => {
           </label>
           <input
             type="number"
+            id="price"
+            placeholder="Price"
             className="border border-black rounded"
-            name="price"
+            {...register("price", {
+              required: "Price is required",
+            })}
           />
+          {errors.price && (
+            <span className="text-red-500">{errors.price.message}</span>
+          )}
         </div>
         <div className="col-span-full">
           <label
@@ -56,9 +104,11 @@ const Add = () => {
                   <span>Upload a file</span>
                   <input
                     id="file-upload"
-                    name="file-upload"
                     type="file"
                     className="sr-only"
+                    {...register("image", {
+                      required: "Image is required",
+                    })}
                   />
                 </label>
                 <p className="pl-1">or drag and drop</p>
@@ -68,6 +118,9 @@ const Add = () => {
               </p>
             </div>
           </div>
+          {errors.image && (
+            <span className="text-red-500">{errors.image.message}</span>
+          )}
         </div>
         <button
           type="submit"
