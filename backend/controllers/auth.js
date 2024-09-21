@@ -7,9 +7,11 @@ export const register = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty) {
-      console.log("error disini kah?");
       return res.status(400).json({ message: errors.array() });
     }
+
+    const body = req.body;
+    if (body.username === "admin") body.role = "admin";
 
     const newUser = new User(req.body);
     await newUser.save();

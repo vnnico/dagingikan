@@ -40,6 +40,8 @@ export const addFish = async (req, res) => {
     await fish.save();
     return res.status(200).json(fish);
   } catch (error) {
-    return res.status(500).json({ message: "Something went wrong" });
+    return res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
 };

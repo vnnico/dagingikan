@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { BsCart4 } from "react-icons/bs";
+import Modal from "../components/Modal";
 
 const Single = () => {
   const { fishId } = useParams();
@@ -71,6 +72,7 @@ const Single = () => {
                     <BsCart4 className="text-lg mt-1"></BsCart4>
                     <p className="md:text-lg text-md">Add to Cart</p>
                   </button>
+                  <Modal></Modal>
                 </div>
               </div>
             </div>
