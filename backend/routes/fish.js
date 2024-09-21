@@ -14,5 +14,12 @@ router.post(
   upload.single("image"),
   fishControllers.addFish
 );
+router.put(
+  "/:fishId",
+  verifyToken,
+  isAdmin,
+  upload.single("image"),
+  fishControllers.editFish
+);
 
 export default router;
