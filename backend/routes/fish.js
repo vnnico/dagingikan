@@ -21,5 +21,6 @@ router.put(
   upload.single("image"),
   fishControllers.editFish
 );
+router.delete("/:fishId", verifyToken, isAdmin, fishControllers.deleteFish);
 
 export default router;

@@ -38,7 +38,7 @@ export const addFish = async (req, res) => {
     });
 
     await fish.save();
-    return res.status(200).json(fish);
+    return res.status(201).json(fish);
   } catch (error) {
     return res
       .status(500)
@@ -71,5 +71,20 @@ export const editFish = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Failed to update fish", error: error.message });
+  }
+};
+
+export const deleteFish = async (req, res) => {
+  try {
+    const { fishId } = req.params;
+    const fish = await Fish.findById(fishId);
+    if (!fish) return res.status(404).json({ message: "Item not found" });
+
+    await Fish.findByIdAndDelete(fishId);
+    return res.status(200).json({ message: "Success deleting fish" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Failed to delete fish", error: error.message });
   }
 };
