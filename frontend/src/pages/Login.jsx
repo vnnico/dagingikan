@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
-import * as apiClient from "../api-client";
+import * as authenticationAPI from "../api/authentication";
 import { useAppContext } from "../context/AppContext";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const Login = () => {
     navigate("/");
   }
 
-  const mutation = useMutation(apiClient.login, {
+  const mutation = useMutation(authenticationAPI.login, {
     onSuccess: async () => {
       showToast({ message: "Login Success!", type: "SUCCESS" });
       navigate("/");

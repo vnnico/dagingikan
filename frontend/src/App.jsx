@@ -3,7 +3,7 @@ import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Cart from "./components/Cart";
+import Single from "./pages/Single";
 
 function App() {
   return (
@@ -14,6 +14,14 @@ function App() {
           element={
             <Layout>
               <Home></Home>
+            </Layout>
+          }
+        ></Route>
+        <Route
+          path="/:fishId"
+          element={
+            <Layout>
+              <Single></Single>
             </Layout>
           }
         ></Route>
