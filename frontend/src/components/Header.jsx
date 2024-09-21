@@ -8,7 +8,7 @@ const Header = () => {
   const { isLoggedIn, toggleCart, carts } = useAppContext();
 
   return (
-    <div className="bg-gray-950 py-6 md:text-3xl max-md:px-3 text-xl ">
+    <div className="bg-gray-950 py-5 md:text-3xl max-md:px-3 text-xl ">
       <div className="container mx-auto flex justify-between">
         <span className=" text-yellow-300  font-medium tracking-tight">
           <Link to="/">dagingikan.com</Link>

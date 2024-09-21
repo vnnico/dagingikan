@@ -4,6 +4,9 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Single from "./pages/Single";
+import Dashboard from "./layouts/Dashboard";
+import Admin from "./pages/admin/Admin";
+import Add from "./pages/admin/Add";
 
 function App() {
   return (
@@ -39,6 +42,22 @@ function App() {
             <Layout>
               <Login></Login>
             </Layout>
+          }
+        ></Route>
+        <Route
+          path="/admin"
+          element={
+            <Dashboard>
+              <Admin></Admin>
+            </Dashboard>
+          }
+        ></Route>
+        <Route
+          path="/admin/create"
+          element={
+            <Dashboard>
+              <Add></Add>
+            </Dashboard>
           }
         ></Route>
       </Routes>
