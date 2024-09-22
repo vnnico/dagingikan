@@ -2,7 +2,10 @@ import Fish from "../models/fish.js";
 
 export const getAllFish = async (req, res) => {
   try {
-    const fishes = await Fish.find({});
+    const page = req.query.page;
+    const fishes = await Fish.find({})
+      .limit(10)
+      .skip(page * 10 - 10);
     return res.status(200).json(fishes);
   } catch (error) {
     return res

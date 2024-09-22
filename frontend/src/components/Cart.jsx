@@ -54,7 +54,7 @@ export default function Cart() {
                   </div>
 
                   <div className="mt-4 py-5 px-4">
-                    <div className="flow-root">
+                    <div className="flow-root ">
                       <ul
                         role="list"
                         className="-my-6 divide-y divide-gray-200"
@@ -114,6 +114,11 @@ export default function Cart() {
                               </div>
                             </li>
                           ))}
+                        {carts && carts.length === 0 && (
+                          <p className="text-gray-950 text-md ">
+                            No item found
+                          </p>
+                        )}
                       </ul>
                     </div>
                   </div>
