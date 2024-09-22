@@ -1,11 +1,12 @@
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import * as fishAPI from "../../api/fish";
 import { useAppContext } from "../../context/AppContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const Add = () => {
+const Edit = () => {
+  const { fishId } = useParams();
   const {
     register,
     handleSubmit,
@@ -13,11 +14,14 @@ const Add = () => {
   } = useForm();
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { showToast } = useAppContext();
+  const { data, isLoading } = useQuery(["fish", fishId], fishAPI.getFish);
 
-  const mutation = useMutation(fishAPI.addFish, {
+  const mutation = useMutation(fishAPI.editFish, {
     onSuccess: async () => {
       showToast({ message: "Successfully adding new item", type: "SUCCESS" });
+      queryClient.invalidateQueries("fish");
       navigate("/admin");
     },
     onError: (error) => {
@@ -26,11 +30,15 @@ const Add = () => {
   });
 
   const postData = (data) => {
-    mutation.mutate(data);
+    mutation.mutate({ ...data, id: fishId });
   };
+
+  if (isLoading) return <div>Please wait...</div>;
   return (
     <div className=" flex flex-col">
-      <h1 className="text-2xl font-semibold mb-3">Insert New Item</h1>
+      <h1 className="text-2xl font-semibold mb-3">
+        Edit <span className="font-bold">{data.fish.name}</span>
+      </h1>
       <form onSubmit={handleSubmit(postData)}>
         <div className="flex flex-col">
           <label className="text-lg" htmlFor="name">
@@ -41,6 +49,7 @@ const Add = () => {
             id="name"
             className="border border-black rounded"
             placeholder="Name"
+            defaultValue={data.fish.name}
             {...register("name", {
               required: "Name is required",
             })}
@@ -57,6 +66,7 @@ const Add = () => {
             type="number"
             id="weight"
             placeholder="Weight"
+            defaultValue={data.fish.weight}
             className="border border-black rounded"
             {...register("weight", {
               required: "Weight is required",
@@ -74,6 +84,7 @@ const Add = () => {
             type="number"
             id="price"
             placeholder="Price"
+            defaultValue={data.fish.price}
             className="border border-black rounded"
             {...register("price", {
               required: "Price is required",
@@ -83,13 +94,20 @@ const Add = () => {
             <span className="text-red-500">{errors.price.message}</span>
           )}
         </div>
-        <div className="col-span-full">
+        <div className="col-span-full py-2">
           <label
             htmlFor="cover-photo"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
             Cover photo
           </label>
+          <div className="w-[400px] h-full">
+            <img
+              src={`/images/${data.fish.image}`}
+              className="w-full bg-center bg-cover h-full"
+              alt={data.fish.name}
+            />
+          </div>
           <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
             <div className="text-center">
               <PhotoIcon
@@ -106,9 +124,7 @@ const Add = () => {
                     id="file-upload"
                     type="file"
                     className="sr-only"
-                    {...register("image", {
-                      required: "Image is required",
-                    })}
+                    {...register("image")}
                   />
                 </label>
                 <p className="pl-1">or drag and drop</p>
@@ -118,19 +134,16 @@ const Add = () => {
               </p>
             </div>
           </div>
-          {errors.image && (
-            <span className="text-red-500">{errors.image.message}</span>
-          )}
         </div>
         <button
           type="submit"
           className="p-2 my-4 bg-blue-500 w-full text-white"
         >
-          Save
+          Update
         </button>
       </form>
     </div>
   );
 };
 
-export default Add;
+export default Edit;
