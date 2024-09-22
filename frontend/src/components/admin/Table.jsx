@@ -1,16 +1,17 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import * as fishAPI from "../../api/fish";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import DeleteModal from "./DeleteModal";
 
 const Table = () => {
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
+  const { showToast } = useAppContext();
+
   const { data } = useQuery(["fishes", page], fishAPI.getAllFish);
   const queryClient = useQueryClient();
-  const { showToast } = useAppContext();
 
   const mutation = useMutation(fishAPI.deleteFish, {
     onSuccess: async () => {
@@ -30,11 +31,14 @@ const Table = () => {
   };
 
   const deleteItem = (id) => {
-    mutation.mutate(id);
+    if (confirm("Are you sure want to delete this product?") === true)
+      mutation.mutate(id);
   };
 
   return (
     <div className="w-full mx-auto overflow-y-auto ">
+      <DeleteModal open={open} setOpen={setOpen}></DeleteModal>
+
       <div className="flex gap-3 mb-3">
         <button
           className={`text-md text-blue-500 ${
@@ -116,15 +120,10 @@ const Table = () => {
                         >
                           Edit
                         </Link>
-                        <DeleteModal
-                          open={open}
-                          setOpen={setOpen}
-                          name={fish.name}
-                        ></DeleteModal>
 
                         <button
                           className="text-red-600 hover:text-indigo-900"
-                          onClick={() => setOpen(!open)}
+                          onClick={() => deleteItem(fish._id)}
                         >
                           Delete
                         </button>

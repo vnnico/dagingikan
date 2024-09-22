@@ -47,12 +47,19 @@ export const addFish = async (data) => {
   return responseBody;
 };
 
-export const editFish = async (params, formData) => {
-  const fishId = params.queryKey[1];
+export const editFish = async (data) => {
+  const fishId = data.id;
+  const formData = new FormData();
+
+  formData.append("name", data.name);
+  formData.append("price", data.price);
+  formData.append("weight", data.weight);
+  if (data.image.length > 0) formData.append("image", data.image[0]);
+
   const response = await fetch(`${API_URL}/api/fish/${fishId}`, {
     method: "PUT",
     credentials: "include",
-    body: JSON.stringify(formData),
+    body: formData,
   });
 
   const responseBody = await response.json();
