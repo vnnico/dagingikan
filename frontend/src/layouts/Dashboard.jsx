@@ -36,7 +36,7 @@ const Dashboard = ({ children }) => {
       </div>
       <div className="flex flex-col w-full">
         <AdminHeader></AdminHeader>
-        <div className=" h-full flex p-12 ">{children}</div>
+        <div className="h-screen flex p-12 ">{children}</div>
       </div>
     </div>
   );

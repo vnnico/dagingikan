@@ -59,3 +59,14 @@ export const editFish = async (params, formData) => {
   if (!response.ok) throw new Error("Failed to fetch");
   return responseBody;
 };
+
+export const deleteFish = async (fishId) => {
+  const response = await fetch(`${API_URL}/api/fish/${fishId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  const responseBody = await response.json();
+  if (!response.ok) throw new Error("Failed to fetch");
+  return responseBody;
+};

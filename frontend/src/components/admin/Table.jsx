@@ -1,11 +1,26 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import * as fishAPI from "../../api/fish";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useAppContext } from "../../context/AppContext";
+import DeleteModal from "./DeleteModal";
 
 const Table = () => {
   const [page, setPage] = useState(1);
+  const [open, setOpen] = useState(false);
   const { data } = useQuery(["fishes", page], fishAPI.getAllFish);
+  const queryClient = useQueryClient();
+  const { showToast } = useAppContext();
+
+  const mutation = useMutation(fishAPI.deleteFish, {
+    onSuccess: async () => {
+      showToast({ message: "Successfully deleting the item", type: "SUCCESS" });
+      queryClient.invalidateQueries("fishes");
+    },
+    onError: (error) => {
+      showToast({ message: error.message, type: "ERROR" });
+    },
+  });
 
   const clickNext = () => {
     setPage(page + 1);
@@ -14,11 +29,17 @@ const Table = () => {
     setPage(page - 1);
   };
 
+  const deleteItem = (id) => {
+    mutation.mutate(id);
+  };
+
   return (
-    <div className="w-full mx-auto mt-3 ">
-      <div className="flex gap-3">
+    <div className="w-full mx-auto overflow-y-auto ">
+      <div className="flex gap-3 mb-3">
         <button
-          className="text-md text-blue-500"
+          className={`text-md text-blue-500 ${
+            page === 1 ? "text-blue-300" : ""
+          }`}
           disabled={page === 1 ? true : null}
           onClick={clickPrev}
         >
@@ -95,9 +116,15 @@ const Table = () => {
                         >
                           Edit
                         </Link>
+                        <DeleteModal
+                          open={open}
+                          setOpen={setOpen}
+                          name={fish.name}
+                        ></DeleteModal>
+
                         <button
-                          to={`/admin/${fish._id}`}
                           className="text-red-600 hover:text-indigo-900"
+                          onClick={() => setOpen(!open)}
                         >
                           Delete
                         </button>
