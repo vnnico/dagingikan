@@ -11,6 +11,11 @@ export const AppContextProvider = ({ children }) => {
   const [carts, setCart] = useState([]);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const searchItem = (e) => {
+    setSearch(e.target.value);
+  };
 
   const toggleCart = () => {
     setOpen(!open);
@@ -84,6 +89,8 @@ export const AppContextProvider = ({ children }) => {
         setOpenModal,
         addCart,
         removeCart,
+        search,
+        searchItem,
       }}
     >
       {toast && (

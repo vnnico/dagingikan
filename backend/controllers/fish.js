@@ -2,10 +2,39 @@ import Fish from "../models/fish.js";
 
 export const getAllFish = async (req, res) => {
   try {
-    const page = req.query.page;
-    const fishes = await Fish.find({})
-      .limit(10)
-      .skip(page * 10 - 10);
+    const { page = 1, search } = req.query;
+
+    let fishes;
+    if (search) {
+      fishes = await Fish.aggregate([
+        {
+          $search: {
+            autocomplete: {
+              query: search,
+              path: "name",
+              tokenOrder: "any",
+              fuzzy: {
+                maxEdits: 1,
+                prefixLength: 3,
+                maxExpansions: 256,
+              },
+            },
+          },
+        },
+        {
+          $limit: 10,
+        },
+        {
+          $skip: page * 10 - 10,
+        },
+      ]);
+    } else {
+      fishes = await Fish.find({})
+        .limit(10)
+        .skip(page * 10 - 10)
+        .sort("createdAt");
+    }
+
     return res.status(200).json(fishes);
   } catch (error) {
     return res
