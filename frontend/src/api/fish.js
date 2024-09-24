@@ -2,11 +2,13 @@ const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getAllFish = async (params) => {
   const page = params.queryKey[1];
+  const search = params.queryKey[2];
 
-  const response = await fetch(`${API_URL}/api/fish?page=${page}`);
+  const response = await fetch(
+    `${API_URL}/api/fish?page=${page}&search=${search}`
+  );
 
   const responseBody = await response.json();
-  console.log(responseBody);
   if (!response.ok) {
     throw new Error("Failed to fetch");
   }

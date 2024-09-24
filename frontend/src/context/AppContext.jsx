@@ -11,6 +11,11 @@ export const AppContextProvider = ({ children }) => {
   const [carts, setCart] = useState([]);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const searchItem = (e) => {
+    setSearch(e.target.value);
+  };
 
   const toggleCart = () => {
     setOpen(!open);
@@ -60,13 +65,13 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  const { isError } = useQuery(
-    "validateToken",
-    authenticationAPI.validateToken,
-    {
-      retry: false,
-    }
-  );
+  const {
+    data: auth,
+    isLoading,
+    isError,
+  } = useQuery("validateToken", authenticationAPI.validateToken, {
+    retry: false,
+  });
 
   return (
     <AppContext.Provider
@@ -84,6 +89,10 @@ export const AppContextProvider = ({ children }) => {
         setOpenModal,
         addCart,
         removeCart,
+        search,
+        searchItem,
+        auth,
+        isLoading,
       }}
     >
       {toast && (

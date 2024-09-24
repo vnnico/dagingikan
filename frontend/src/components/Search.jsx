@@ -1,6 +1,6 @@
 import { BsSearch } from "react-icons/bs";
 
-const Search = ({ placeholder }) => {
+const Search = ({ placeholder, searchItem }) => {
   return (
     <form action="" className="pt-5">
       <div className="container bg-white w-full max-md:w-full flex">
@@ -11,6 +11,7 @@ const Search = ({ placeholder }) => {
           type="text"
           className="flex-1 p-2 font-semibold border-none focus:outline-none"
           placeholder={placeholder}
+          onChange={searchItem}
         />
       </div>
     </form>
