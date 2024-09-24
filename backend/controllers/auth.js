@@ -16,9 +16,13 @@ export const register = async (req, res, next) => {
     const newUser = new User(req.body);
     await newUser.save();
 
-    const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { userId: newUser.id, userRole: newUser.role },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     res.cookie("auth_token", token, {
       maxAge: 24 * 60 * 60 * 1000,
@@ -47,9 +51,13 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid Credentials" });
     }
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { userId: user.id, userRole: user.role },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     res.cookie("auth_token", token, {
       maxAge: 24 * 60 * 60 * 1000,
@@ -62,7 +70,7 @@ export const login = async (req, res) => {
 };
 
 export const validateToken = async (req, res) => {
-  return res.status(200).json({ userId: req.userId });
+  return res.status(200).json({ userId: req.userId, userRole: req.userRole });
 };
 
 export const logout = async (req, res) => {

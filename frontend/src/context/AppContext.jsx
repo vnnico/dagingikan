@@ -65,13 +65,13 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  const { isError } = useQuery(
-    "validateToken",
-    authenticationAPI.validateToken,
-    {
-      retry: false,
-    }
-  );
+  const {
+    data: auth,
+    isLoading,
+    isError,
+  } = useQuery("validateToken", authenticationAPI.validateToken, {
+    retry: false,
+  });
 
   return (
     <AppContext.Provider
@@ -91,6 +91,8 @@ export const AppContextProvider = ({ children }) => {
         removeCart,
         search,
         searchItem,
+        auth,
+        isLoading,
       }}
     >
       {toast && (

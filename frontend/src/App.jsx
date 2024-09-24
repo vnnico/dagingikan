@@ -8,6 +8,9 @@ import Dashboard from "./layouts/Dashboard";
 import Add from "./pages/admin/Add";
 import View from "./pages/admin/View";
 import Edit from "./pages/admin/Edit";
+import NotFound from "./pages/NotFound";
+import UserPage from "./authorization/UserPage";
+import AdminPage from "./authorization/AdminPage";
 
 function App() {
   return (
@@ -16,17 +19,21 @@ function App() {
         <Route
           path="/"
           element={
-            <Layout>
-              <Home></Home>
-            </Layout>
+            <UserPage>
+              <Layout>
+                <Home></Home>
+              </Layout>
+            </UserPage>
           }
         ></Route>
         <Route
           path="/:fishId"
           element={
-            <Layout>
-              <Single></Single>
-            </Layout>
+            <UserPage>
+              <Layout>
+                <Single></Single>
+              </Layout>
+            </UserPage>
           }
         ></Route>
         <Route
@@ -48,27 +55,34 @@ function App() {
         <Route
           path="/admin"
           element={
-            <Dashboard>
-              <View></View>
-            </Dashboard>
+            <AdminPage>
+              <Dashboard>
+                <View></View>
+              </Dashboard>
+            </AdminPage>
           }
         ></Route>
         <Route
           path="/admin/:fishId"
           element={
-            <Dashboard>
-              <Edit></Edit>
-            </Dashboard>
+            <AdminPage>
+              <Dashboard>
+                <Edit></Edit>
+              </Dashboard>
+            </AdminPage>
           }
         ></Route>
         <Route
           path="/admin/create"
           element={
-            <Dashboard>
-              <Add></Add>
-            </Dashboard>
+            <AdminPage>
+              <Dashboard>
+                <Add></Add>
+              </Dashboard>
+            </AdminPage>
           }
         ></Route>
+        <Route path="*" element={<NotFound></NotFound>}></Route>
       </Routes>
     </Router>
   );

@@ -9,7 +9,6 @@ export const getAllFish = async (params) => {
   );
 
   const responseBody = await response.json();
-  console.log(responseBody);
   if (!response.ok) {
     throw new Error("Failed to fetch");
   }
