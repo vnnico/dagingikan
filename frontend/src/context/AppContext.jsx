@@ -9,6 +9,12 @@ const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const [toast, setToast] = useState(undefined);
   const [carts, setCart] = useState([]);
+
+  useEffect(() => {
+    const cartStorage = JSON.parse(localStorage.getItem("carts"));
+    if (cartStorage && cartStorage.length > 0) setCart(cartStorage);
+  }, []);
+
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [search, setSearch] = useState("");
@@ -64,6 +70,10 @@ export const AppContextProvider = ({ children }) => {
       );
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem("carts", JSON.stringify(carts));
+  }, [addCart, removeCart]);
 
   const {
     data: auth,
