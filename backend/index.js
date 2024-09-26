@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.js";
 import fishRoutes from "./routes/fish.js";
+import orderRoutes from "./routes/order.js";
 
 configDotenv();
 const app = express();
@@ -33,6 +34,7 @@ app.use(cookieParser());
 // API
 app.use("/api/auth", authRoutes);
 app.use("/api/fish", fishRoutes);
+app.use("/api/order", orderRoutes);
 
 app.listen(process.env.PORT, (req, res) => {
   console.log(`App listening on http://localhost:${process.env.PORT}`);

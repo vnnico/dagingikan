@@ -10,16 +10,43 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { BsPlusLg, BsDashLg } from "react-icons/bs";
 import { useAppContext } from "../context/AppContext";
-import Modal from "./Modal";
+
+import { useMutation } from "react-query";
+import * as orderAPI from "../api/order";
 
 export default function Cart() {
   const { carts, open, setOpen, addCart, removeCart } = useAppContext();
-
+  const { showToast } = useAppContext();
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
     setTotal(carts.reduce((acc, cart) => acc + cart.quantity * cart.price, 0));
   }, [carts]);
+
+  const mutation = useMutation(orderAPI.orderItems, {
+    onSuccess: async (data) => {
+      window.snap.pay(data.token, {
+        onSuccess: () => {
+          showToast({ message: "Payment Success", type: "SUCCESS" });
+        },
+        onError: () => {
+          showToast({ message: "Payment Failed", type: "ERROR" });
+        },
+        // onClose: () => {
+        //   delete orderId
+        // }
+      });
+    },
+    onError: (error) => {
+      showToast({ message: error.message, type: "ERROR" });
+    },
+  });
+
+  const makePayment = () => {
+    // console.log({ carts, amount: total });
+    if (confirm("Are you sure to proceed the transaction?") === true)
+      mutation.mutate({ carts, amount: total });
+  };
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
@@ -137,14 +164,12 @@ export default function Cart() {
                   <p className="mt-0.5 text-sm">
                     Shipping and taxes calculated at checkout.
                   </p>
-                  <div className="mt-6">
-                    <a
-                      href="#"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-yellow-400 px-6 py-4 mb-2 text-base font-medium text-white shadow-sm hover:bg-yellow-600"
-                    >
-                      Checkout
-                    </a>
-                  </div>
+                  <button
+                    className="w-full mt-6 px-6 py-4 mb-2 rounded-md font-medium bg-yellow-400 hover:bg-yellow-600"
+                    onClick={makePayment}
+                  >
+                    Checkout
+                  </button>
                 </div>
               </div>
             </DialogPanel>
