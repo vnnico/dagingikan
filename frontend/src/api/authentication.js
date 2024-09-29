@@ -6,6 +6,7 @@ export const register = async (formData) => {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "skip-browser-warning",
     },
     body: JSON.stringify(formData),
   });
@@ -18,16 +19,19 @@ export const register = async (formData) => {
 };
 
 export const login = async (formData) => {
+  console.log("woi");
   const response = await fetch(`${API_URL}/api/auth/login`, {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "skip-browser-warning",
     },
     body: JSON.stringify(formData),
   });
 
   const body = await response.json();
+  console.log(body);
   if (!response.ok) {
     throw new Error(body.message);
   }
@@ -37,6 +41,9 @@ export const login = async (formData) => {
 export const validateToken = async () => {
   const response = await fetch(`${API_URL}/api/auth/validateToken`, {
     credentials: "include",
+    headers: {
+      "ngrok-skip-browser-warning": "skip-browser-warning",
+    },
   });
 
   if (!response.ok) {
@@ -50,6 +57,9 @@ export const logout = async () => {
   const response = await fetch(`${API_URL}/api/auth/logout`, {
     credentials: "include",
     method: "POST",
+    headers: {
+      "ngrok-skip-browser-warning": "skip-browser-warning",
+    },
   });
 
   if (!response.ok) {

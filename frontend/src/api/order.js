@@ -7,6 +7,7 @@ export const orderItems = async (formData) => {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "skip-browser-warning",
     },
     body: JSON.stringify(formData),
   });
