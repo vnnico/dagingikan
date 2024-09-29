@@ -10,16 +10,40 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { BsPlusLg, BsDashLg } from "react-icons/bs";
 import { useAppContext } from "../context/AppContext";
-import Modal from "./Modal";
+
+import { useMutation } from "react-query";
+import * as orderAPI from "../api/order";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
-  const { carts, open, setOpen, addCart, removeCart } = useAppContext();
-
+  const { carts, open, setOpen, addCart, removeCart, removeAllCarts } =
+    useAppContext();
+  const { showToast } = useAppContext();
   const [total, setTotal] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTotal(carts.reduce((acc, cart) => acc + cart.quantity * cart.price, 0));
   }, [carts]);
+
+  const mutation = useMutation(orderAPI.orderItems, {
+    onSuccess: async (data) => {
+      showToast({ message: "Payment created", type: "SUCCESS" });
+      setOpen(!open);
+      removeAllCarts();
+      navigate(`/order/${data.orderId}`);
+    },
+    onError: (error) => {
+      showToast({ message: error.message, type: "ERROR" });
+    },
+  });
+
+  const makePayment = () => {
+    if (carts.length > 0) {
+      if (confirm("Are you sure to proceed the transaction?") === true)
+        mutation.mutate({ carts, amount: total });
+    }
+  };
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
@@ -60,7 +84,7 @@ export default function Cart() {
                         className="-my-6 divide-y divide-gray-200"
                       >
                         {carts &&
-                          carts?.map((cart) => (
+                          carts.map((cart) => (
                             <li key={cart.id} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
@@ -137,14 +161,13 @@ export default function Cart() {
                   <p className="mt-0.5 text-sm">
                     Shipping and taxes calculated at checkout.
                   </p>
-                  <div className="mt-6">
-                    <a
-                      href="#"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-yellow-400 px-6 py-4 mb-2 text-base font-medium text-white shadow-sm hover:bg-yellow-600"
-                    >
-                      Checkout
-                    </a>
-                  </div>
+                  <button
+                    className="w-full mt-6 px-6 py-4 mb-2 rounded-md font-medium bg-yellow-400 hover:bg-yellow-600"
+                    disable={`${carts.length > 0}? ${false} : ${true}`}
+                    onClick={makePayment}
+                  >
+                    Checkout
+                  </button>
                 </div>
               </div>
             </DialogPanel>

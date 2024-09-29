@@ -7,7 +7,7 @@ const AdminPage = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!auth || auth.userRole !== "admin") navigate("*");
+    if (!auth || auth.userRole !== "admin") navigate("/admin");
   }, [auth]);
 
   if (isLoading) return <div>tunggu...</div>;

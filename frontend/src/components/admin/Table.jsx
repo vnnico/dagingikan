@@ -33,19 +33,19 @@ const Table = ({ fishes, clickNext, clickPrev, page }) => {
       <div className="flex gap-3 mb-3">
         <button
           className={`text-md text-blue-500 ${
-            page === 1 ? "text-blue-200" : ""
+            page === 1 ? "text-blue-300" : "text-blue-500"
           }`}
-          disabled={page === 1 ? true : null}
+          disabled={page === 1 ? true : false}
           onClick={clickPrev}
         >
           Prev
         </button>
         <button
           className={`text-md text-blue-500 ${
-            fishes && fishes.length === 0 ? "text-blue-200" : ""
+            fishes && fishes.length === 0 ? "text-blue-300" : "text-blue-500"
           }`}
           onClick={clickNext}
-          disabled={fishes && fishes.length === 0 ? true : null}
+          disabled={fishes && fishes.length === 0 ? true : false}
         >
           Next
         </button>

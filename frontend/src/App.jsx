@@ -11,6 +11,8 @@ import Edit from "./pages/admin/Edit";
 import NotFound from "./pages/NotFound";
 import UserPage from "./authorization/UserPage";
 import AdminPage from "./authorization/AdminPage";
+import Order from "./pages/Order";
+import Orders from "./pages/Orders";
 
 function App() {
   return (
@@ -82,6 +84,28 @@ function App() {
             </AdminPage>
           }
         ></Route>
+        <Route
+          path="/orders"
+          element={
+            <UserPage>
+              <Layout>
+                <Orders></Orders>
+              </Layout>
+            </UserPage>
+          }
+        ></Route>
+
+        <Route
+          path="/order/:orderId"
+          element={
+            <UserPage>
+              <Layout>
+                <Order></Order>
+              </Layout>
+            </UserPage>
+          }
+        ></Route>
+
         <Route path="*" element={<NotFound></NotFound>}></Route>
       </Routes>
     </Router>

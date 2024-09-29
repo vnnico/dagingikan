@@ -26,6 +26,9 @@ export const register = async (req, res, next) => {
 
     res.cookie("auth_token", token, {
       maxAge: 24 * 60 * 60 * 1000,
+      secure: true,
+      sameSite: "None",
+      httpOnly: true,
     });
 
     return res.status(200).json({ message: "User registered successfully" });
@@ -61,6 +64,9 @@ export const login = async (req, res) => {
 
     res.cookie("auth_token", token, {
       maxAge: 24 * 60 * 60 * 1000,
+      secure: true,
+      httpOnly: true,
+      sameSite: "None",
     });
 
     res.status(200).json({ userId: user._id });
@@ -76,6 +82,9 @@ export const validateToken = async (req, res) => {
 export const logout = async (req, res) => {
   res.cookie("auth_token", "", {
     expires: new Date(0),
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
   });
   return res.status(200).json({ message: "Logout success" });
 };

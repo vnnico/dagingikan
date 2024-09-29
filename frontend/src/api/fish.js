@@ -4,8 +4,15 @@ export const getAllFish = async (params) => {
   const page = params.queryKey[1];
   const search = params.queryKey[2];
 
+  console.log(API_URL);
+
   const response = await fetch(
-    `${API_URL}/api/fish?page=${page}&search=${search}`
+    `${API_URL}/api/fish?page=${page}&search=${search}`,
+    {
+      headers: {
+        "ngrok-skip-browser-warning": "skip-browser-warning",
+      },
+    }
   );
 
   const responseBody = await response.json();
@@ -18,7 +25,11 @@ export const getAllFish = async (params) => {
 
 export const getFish = async (params) => {
   const fishId = params.queryKey[1];
-  const response = await fetch(`${API_URL}/api/fish/${fishId}`);
+  const response = await fetch(`${API_URL}/api/fish/${fishId}`, {
+    headers: {
+      "ngrok-skip-browser-warning": "skip-browser-warning",
+    },
+  });
 
   const responseBody = await response.json();
   if (!response.ok) throw new Error("Failed to fetch");
@@ -42,6 +53,10 @@ export const addFish = async (data) => {
     method: "POST",
     credentials: "include",
     body: formData,
+
+    headers: {
+      "ngrok-skip-browser-warning": "skip-browser-warning",
+    },
   });
 
   const responseBody = await response.json();
@@ -62,6 +77,9 @@ export const editFish = async (data) => {
     method: "PUT",
     credentials: "include",
     body: formData,
+    headers: {
+      "ngrok-skip-browser-warning": "skip-browser-warning",
+    },
   });
 
   const responseBody = await response.json();
@@ -73,6 +91,9 @@ export const deleteFish = async (fishId) => {
   const response = await fetch(`${API_URL}/api/fish/${fishId}`, {
     method: "DELETE",
     credentials: "include",
+    headers: {
+      "ngrok-skip-browser-warning": "skip-browser-warning",
+    },
   });
 
   const responseBody = await response.json();
