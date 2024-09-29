@@ -23,15 +23,20 @@ router.get("/all", verifyToken, isAdmin, orderControllers.getAllOrders);
 /**
  * Get Customer's Order
  */
-router.get("/:userId", verifyToken, orderControllers.getCustomerOrder);
+// router.get("/:userId", verifyToken, orderControllers.getCustomerOrder);
+
+/**
+ * Get Order By Id
+ */
+router.get("/orderId", verifyToken, orderControllers.getOrder);
 
 /**
  * Check Transaction Order Status
  */
-router.post(
-  "/check_transaction_status",
+router.get(
+  "/check_order_status/:orderId",
   verifyToken,
-  orderControllers.checkTransactionStatus
+  orderControllers.checkOrderStatus
 );
 
 /**
@@ -41,5 +46,10 @@ router.post(
   "/transaction_notification",
   orderControllers.getTransactionNotification
 );
+
+/**
+ * [ADMIN]
+ * Delete Order
+ */
 
 export default router;

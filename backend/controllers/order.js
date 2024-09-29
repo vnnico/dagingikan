@@ -46,6 +46,7 @@ export const orderFish = async (req, res) => {
       throw new Error(responseBody.error_messages);
     }
 
+    order.transactionId = responseBody.transaction_id;
     await order.save();
     return res.status(201).json({
       message: "Order Created",
@@ -103,6 +104,15 @@ export const createOrder = async (req, res) => {
   }
 };
 
+export const getOrder = async (req, res) => {
+  try {
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Failed to fetch", error: error.message });
+  }
+};
+
 export const getOrders = async (req, res) => {
   try {
     const userId = req.userId;
@@ -149,17 +159,32 @@ export const getCustomerOrder = async (req, res) => {
   }
 };
 
-export const checkTransactionStatus = async (req, res) => {
+export const checkOrderStatus = async (req, res) => {
   try {
-    const { transactionId } = req.body;
+    const { orderId } = req.params;
     const core = new midtransClient.CoreApi({
       isProduction: false,
       serverKey: process.env.SERVER_KEY,
       clientKey: process.env.CLIENT_KEY,
     });
+    const order = await Order.findById(orderId).populate("user");
+    if (!order)
+      return res
+        .status(404)
+        .json({ message: "Order not found", error: error.message });
 
-    const transactionStatus = await core.transaction.status(transactionId);
-    return res.status(200).json(transactionStatus);
+    const tr = await core.transaction.status(order.transactionId);
+    const orderStatus = {
+      customer: order.user.username,
+      amount: order.amount,
+      transactionId: order.transactionId,
+      status: tr.transaction_status,
+      expiryDate: tr.expiry_time,
+      vaNumbers: tr.va_numbers[0].va_number,
+      items: order.items,
+    };
+
+    return res.status(200).json(orderStatus);
   } catch (error) {
     return res
       .status(500)

@@ -20,14 +20,21 @@ export const checkTransactionNotification = async (notificationJSON) => {
   if (transactionStatus === "settlement") {
     order.channel = channel;
     order.status = "settlement";
-    await order.save();
   } else if (transactionStatus === "cancel" || transactionStatus === "expire") {
     order.channel = channel;
     order.status = "failure";
-    await order.save();
   } else if (transactionStatus === "pending") {
     order.channel = channel;
     order.status = "pending";
-    await order.save();
+  } else if (transactionStatus === "expire") {
+    // Remove Expired Order in 24h
+    order.channel = channel;
+    order.status = "expire";
+  } else if (transactionStatus === "cancel") {
+    // Remove Cancel Order in 24h
+    order.channel = channel;
+    order.status = "cancel";
   }
+
+  await order.save();
 };
