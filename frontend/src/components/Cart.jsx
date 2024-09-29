@@ -13,11 +13,14 @@ import { useAppContext } from "../context/AppContext";
 
 import { useMutation } from "react-query";
 import * as orderAPI from "../api/order";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
-  const { carts, open, setOpen, addCart, removeCart } = useAppContext();
+  const { carts, open, setOpen, addCart, removeCart, removeAllCarts } =
+    useAppContext();
   const { showToast } = useAppContext();
   const [total, setTotal] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTotal(carts.reduce((acc, cart) => acc + cart.quantity * cart.price, 0));
@@ -25,17 +28,10 @@ export default function Cart() {
 
   const mutation = useMutation(orderAPI.orderItems, {
     onSuccess: async (data) => {
-      window.snap.pay(data.token, {
-        onSuccess: () => {
-          showToast({ message: "Payment Success", type: "SUCCESS" });
-        },
-        onError: () => {
-          showToast({ message: "Payment Failed", type: "ERROR" });
-        },
-        // onClose: () => {
-        //   delete orderId
-        // }
-      });
+      showToast({ message: "Payment created", type: "SUCCESS" });
+      setOpen(!open);
+      removeAllCarts();
+      navigate(`/order/${data.orderId}`);
     },
     onError: (error) => {
       showToast({ message: error.message, type: "ERROR" });
@@ -43,9 +39,10 @@ export default function Cart() {
   });
 
   const makePayment = () => {
-    // console.log({ carts, amount: total });
-    if (confirm("Are you sure to proceed the transaction?") === true)
-      mutation.mutate({ carts, amount: total });
+    if (carts.length > 0) {
+      if (confirm("Are you sure to proceed the transaction?") === true)
+        mutation.mutate({ carts, amount: total });
+    }
   };
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
@@ -166,6 +163,7 @@ export default function Cart() {
                   </p>
                   <button
                     className="w-full mt-6 px-6 py-4 mb-2 rounded-md font-medium bg-yellow-400 hover:bg-yellow-600"
+                    disable={`${carts.length > 0}? ${false} : ${true}`}
                     onClick={makePayment}
                   >
                     Checkout

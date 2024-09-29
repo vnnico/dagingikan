@@ -18,12 +18,14 @@ const Order = () => {
   );
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (orderStatus) setTimeLeft(countdownTime(orderStatus.expiryDate));
-    }, 1000);
+    if (orderStatus && orderStatus.status === "pending") {
+      const timer = setInterval(() => {
+        setTimeLeft(countdownTime(orderStatus.expiryDate));
+      }, 1000);
 
-    // Clean up the interval on component unmount
-    return () => clearInterval(timer);
+      // Clean up the interval on component unmount
+      return () => clearInterval(timer);
+    }
   }, [orderStatus]);
 
   function formatNumber(number) {
@@ -111,11 +113,13 @@ const Order = () => {
             </div>
             <div className="pt-0 p-4 bg-white rounded-br-lg rounded-bl-lg ">
               <div className="flex flex-col gap-2  ">
-                <p className="text-xs lg:text-md">{`Payment Countdown : ${formatNumber(
-                  timeLeft.hours
-                )}:${formatNumber(timeLeft.minutes)}:${formatNumber(
-                  timeLeft.seconds
-                )}`}</p>
+                {orderStatus.status === "pending" && (
+                  <p className="text-xs lg:text-md">{`Payment Countdown : ${formatNumber(
+                    timeLeft.hours
+                  )}:${formatNumber(timeLeft.minutes)}:${formatNumber(
+                    timeLeft.seconds
+                  )}`}</p>
+                )}
                 <button
                   className="bg-slate-950 text-yellow-300 rounded-md font-semibold text-lg"
                   onClick={() => navigate(-1)}

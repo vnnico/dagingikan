@@ -71,6 +71,10 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  const removeAllCarts = () => {
+    setCart([]);
+  };
+
   useEffect(() => {
     localStorage.setItem("carts", JSON.stringify(carts));
   }, [addCart, removeCart]);
@@ -99,6 +103,7 @@ export const AppContextProvider = ({ children }) => {
         setOpenModal,
         addCart,
         removeCart,
+        removeAllCarts,
         search,
         searchItem,
         auth,

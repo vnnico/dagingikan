@@ -94,9 +94,7 @@ export const createOrder = async (req, res) => {
     });
     await order.save();
 
-    return res
-      .status(200)
-      .json({ data: transaction, clientKey: core.apiConfig.clientKey });
+    return res.status(200).json({ orderId: order._id });
   } catch (error) {
     return res
       .status(500)

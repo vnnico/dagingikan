@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import UserPage from "./authorization/UserPage";
 import AdminPage from "./authorization/AdminPage";
 import Order from "./pages/Order";
+import Orders from "./pages/Orders";
 
 function App() {
   return (
@@ -81,6 +82,16 @@ function App() {
                 <Add></Add>
               </Dashboard>
             </AdminPage>
+          }
+        ></Route>
+        <Route
+          path="/orders"
+          element={
+            <UserPage>
+              <Layout>
+                <Orders></Orders>
+              </Layout>
+            </UserPage>
           }
         ></Route>
 
