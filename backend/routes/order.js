@@ -10,15 +10,20 @@ const router = express.Router();
 router.post("/", verifyToken, orderControllers.createOrder);
 
 /**
+ * Get Current Customer's Order
+ */
+router.get("/", verifyToken, orderControllers.getOrders);
+
+/**
  * [ ADMIN ]
  * Get All Orders
  */
-router.get("/", verifyToken, isAdmin, orderControllers.getAllOrders);
+router.get("/all", verifyToken, isAdmin, orderControllers.getAllOrders);
 
 /**
  * Get Customer's Order
  */
-router.get("/:orderId", verifyToken, orderControllers.getCustomerOrder);
+router.get("/:userId", verifyToken, orderControllers.getCustomerOrder);
 
 /**
  * Check Transaction Order Status

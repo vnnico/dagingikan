@@ -103,9 +103,27 @@ export const createOrder = async (req, res) => {
   }
 };
 
+export const getOrders = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const orders = await Order.find({ user: user });
+    return res.status(200).json(orders);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Failed to fetch", error: error.message });
+  }
+};
+
 export const getAllOrders = async (req, res) => {
   try {
-    return res.json({});
+    //const { page = 1, search } = req.query;
+    const orders = await Order.find({});
+
+    return res.status(200).json(orders);
   } catch (error) {
     return res
       .status(500)
@@ -115,7 +133,15 @@ export const getAllOrders = async (req, res) => {
 
 export const getCustomerOrder = async (req, res) => {
   try {
-    return res.json({});
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const customerOrders = await Order.find({
+      user: user,
+    });
+
+    return res.status(200).json(customerOrders);
   } catch (error) {
     return res
       .status(500)
