@@ -85,26 +85,34 @@ const Orders = () => {
               </div>
             </div>
           ))}
-        <div className="flex mx-auto gap-3 mb-3">
-          <button
-            className={`text-md bg-slate-950  px-3 rounded-md py-1 text-yellow-300 ${
-              page === 1 ? "text-yellow-100" : "text-yellow-300"
-            } `}
-            disabled={page === 1 ? true : false}
-            onClick={clickPrev}
-          >
-            Prev
-          </button>
-          <button
-            className={`text-md bg-slate-950 px-3 rounded-md py-1 text-yellow-300 ${
-              orders && orders.length === 0 ? "text-blue-300" : "text-blue-500"
-            }`}
-            onClick={clickNext}
-            disabled={orders && orders.length === 0 ? true : false}
-          >
-            Next
-          </button>
-        </div>
+        {orders && orders.length > 0 ? (
+          <div className="flex mx-auto gap-3 mb-3">
+            <button
+              className={`text-md bg-slate-950  px-3 rounded-md py-1 text-yellow-300 ${
+                page === 1 ? "text-yellow-100" : "text-yellow-300"
+              } `}
+              disabled={page === 1 ? true : false}
+              onClick={clickPrev}
+            >
+              Prev
+            </button>
+            <button
+              className={`text-md bg-slate-950 px-3 rounded-md py-1 text-yellow-300 ${
+                orders && orders.length === 0
+                  ? "text-blue-300"
+                  : "text-blue-500"
+              }`}
+              onClick={clickNext}
+              disabled={orders && orders.length === 0 ? true : false}
+            >
+              Next
+            </button>
+          </div>
+        ) : (
+          <div className="flex m-auto gap-3">
+            <h1 className="text-2xl">You have no orders yet.</h1>
+          </div>
+        )}
       </div>
     </div>
   );

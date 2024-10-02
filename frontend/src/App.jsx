@@ -11,6 +11,7 @@ import Edit from "./pages/admin/Edit";
 import NotFound from "./pages/NotFound";
 import UserPage from "./authorization/UserPage";
 import AdminPage from "./authorization/AdminPage";
+import GuestPage from "./authorization/GuestPage";
 import Order from "./pages/Order";
 import Orders from "./pages/Orders";
 
@@ -21,21 +22,21 @@ function App() {
         <Route
           path="/"
           element={
-            <UserPage>
+            <GuestPage>
               <Layout>
                 <Home></Home>
               </Layout>
-            </UserPage>
+            </GuestPage>
           }
         ></Route>
         <Route
           path="/:fishId"
           element={
-            <UserPage>
+            <GuestPage>
               <Layout>
                 <Single></Single>
               </Layout>
-            </UserPage>
+            </GuestPage>
           }
         ></Route>
         <Route
@@ -49,9 +50,11 @@ function App() {
         <Route
           path="/login"
           element={
-            <Layout>
-              <Login></Login>
-            </Layout>
+            <GuestPage>
+              <Layout>
+                <Login></Login>
+              </Layout>
+            </GuestPage>
           }
         ></Route>
         <Route
