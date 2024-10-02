@@ -14,6 +14,7 @@ import AdminPage from "./authorization/AdminPage";
 import GuestPage from "./authorization/GuestPage";
 import Order from "./pages/Order";
 import Orders from "./pages/Orders";
+import AdminOrder from "./pages/admin/AdminOrder";
 
 function App() {
   return (
@@ -63,6 +64,16 @@ function App() {
             <AdminPage>
               <Dashboard>
                 <View></View>
+              </Dashboard>
+            </AdminPage>
+          }
+        ></Route>
+        <Route
+          path="/admin/order"
+          element={
+            <AdminPage>
+              <Dashboard>
+                <AdminOrder></AdminOrder>
               </Dashboard>
             </AdminPage>
           }

@@ -15,7 +15,7 @@ const NavList = () => {
         <MdCreateNewFolder className="mt-[7px]"></MdCreateNewFolder>
         <p className="text-lg">Create</p>
       </Link>
-      <Link className="flex gap-4">
+      <Link className="flex gap-4" to="/admin/order">
         <FaClipboardList className="mt-[7px]"></FaClipboardList>
         <p className="text-lg">Order</p>
       </Link>
