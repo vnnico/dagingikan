@@ -9,6 +9,7 @@ const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const [toast, setToast] = useState(undefined);
   const [carts, setCart] = useState([]);
+  const [modalItems, setModalItems] = useState([]);
 
   useEffect(() => {
     const cartStorage = JSON.parse(localStorage.getItem("carts"));
@@ -108,6 +109,8 @@ export const AppContextProvider = ({ children }) => {
         searchItem,
         auth,
         isLoading,
+        modalItems,
+        setModalItems,
       }}
     >
       {toast && (
