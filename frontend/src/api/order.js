@@ -35,3 +35,18 @@ export const getOrderStatus = async (params) => {
 
   return responseBody;
 };
+
+export const getOrders = async (params) => {
+  const page = params.queryKey[1];
+  const response = await fetch(`${API_URL}/api/order?page=${page}`, {
+    credentials: "include",
+    headers: {
+      "ngrok-skip-browser-warning": "skip-browser-warning",
+    },
+  });
+
+  const responseBody = await response.json();
+  if (!response.ok) throw new Error("Failed to fetch");
+
+  return responseBody;
+};

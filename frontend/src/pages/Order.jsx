@@ -106,7 +106,10 @@ const Order = () => {
                     Total :{" "}
                   </p>
                   <p className="text-sm lg:text-lg font-bold ms-auto ">
-                    {orderStatus.amount}
+                    {orderStatus.amount.toLocaleString("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    })}
                   </p>
                 </span>
               </div>
