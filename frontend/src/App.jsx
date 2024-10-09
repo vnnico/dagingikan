@@ -15,6 +15,7 @@ import GuestPage from "./authorization/GuestPage";
 import Order from "./pages/Order";
 import Orders from "./pages/Orders";
 import AdminOrder from "./pages/admin/AdminOrder";
+import Chat from "./pages/admin/Chat";
 
 function App() {
   return (
@@ -94,6 +95,16 @@ function App() {
             <AdminPage>
               <Dashboard>
                 <Add></Add>
+              </Dashboard>
+            </AdminPage>
+          }
+        ></Route>
+        <Route
+          path="/admin/chat"
+          element={
+            <AdminPage>
+              <Dashboard>
+                <Chat></Chat>
               </Dashboard>
             </AdminPage>
           }
