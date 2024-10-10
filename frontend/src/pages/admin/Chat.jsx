@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import socket from "../../services/socket";
 import { useAppContext } from "../../context/AppContext";
 import { useQuery } from "react-query";
@@ -47,7 +47,7 @@ const Chat = () => {
   const sendMessage = (e) => {
     e.preventDefault();
 
-    socket.emit("send message", {
+    socket.volatile.emit("send message", {
       content: message,
       from: "admin",
       to: selectedChat._id,
@@ -56,7 +56,20 @@ const Chat = () => {
 
   const typeMessage = (e) => {
     setMessage(e.target.value);
-    socket.emit("typing", { from: "admin", to: selectedChat._id });
+    socket.emit("typing", {
+      from: "admin",
+      to: selectedChat._id,
+      bool: true,
+    });
+
+    setTimeout(() => {
+      socket.emit("typing", {
+        from: "admin",
+        to: selectedChat._id,
+        bool: false,
+      });
+    }, 4000);
+    stopType();
   };
 
   return (

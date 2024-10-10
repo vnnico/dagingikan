@@ -37,14 +37,9 @@ const ChatBox = () => {
 
   useEffect(() => {
     if (auth) {
-      socket.on("is typing", ({ from, to }) => {
+      socket.on("is typing", ({ from, to, bool }) => {
         if (to === auth.userId) {
-          setIsTyping(true);
-        }
-      });
-      socket.on("is not typing", ({ from, to }) => {
-        if (to === auth.userId) {
-          setIsTyping(false);
+          bool == true ? setIsTyping(true) : setIsTyping(false);
         }
       });
     }
@@ -52,7 +47,7 @@ const ChatBox = () => {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    socket.emit("send message", {
+    socket.volatile.emit("send message", {
       content: message,
       from: auth.userId,
       to: auth.userId,

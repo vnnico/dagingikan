@@ -15,13 +15,13 @@ export const setupSocket = (io) => {
       });
     });
 
-    socket.on("typing", ({ from, to }) => {
-      socket.to(to).emit("is typing", { from, to });
+    socket.on("typing", ({ from, to, bool }) => {
+      socket.to(to).emit("is typing", { from, to, bool });
     });
 
-    socket.on("not typing", ({ from, to }) => {
-      socket.to(to).emit("is not typing", { from, to });
-    });
+    // socket.on("not typing", ({ from, to, bool }) => {
+    //   socket.to(to).emit("is typing", { from, to, bool });
+    // });
 
     socket.on("disconnect", () => {
       console.log("Disconnected");
