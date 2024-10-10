@@ -68,3 +68,19 @@ export const logout = async () => {
 
   return response.json();
 };
+
+export const getAllUsers = async () => {
+  const response = await fetch(`${API_URL}/api/auth`, {
+    credentials: "include",
+    method: "GET",
+    headers: {
+      "ngrok-skip-browser-warning": "skip-browser-warning",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Error during sign out");
+  }
+
+  return response.json();
+};
