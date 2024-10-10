@@ -113,11 +113,15 @@ export const getOrder = async (req, res) => {
 
 export const getOrders = async (req, res) => {
   try {
+    const { page = 1 } = req.query;
     const userId = req.userId;
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const orders = await Order.find({ user: user });
+    const orders = await Order.find({ user: user })
+      .limit(3)
+      .skip(page * 3 - 3)
+      .sort("status");
     return res.status(200).json(orders);
   } catch (error) {
     return res
@@ -128,8 +132,39 @@ export const getOrders = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
   try {
-    //const { page = 1, search } = req.query;
-    const orders = await Order.find({});
+    const { page = 1, search } = req.query;
+    let orders;
+    if (search) {
+      orders = await Order.aggregate([
+        {
+          $search: {
+            index: "order_search",
+            autocomplete: {
+              query: search,
+              path: "transactionId",
+              tokenOrder: "any",
+              fuzzy: {
+                maxEdits: 1,
+                prefixLength: 3,
+                maxExpansions: 256,
+              },
+            },
+          },
+        },
+        {
+          $limit: 10,
+        },
+        {
+          $skip: page * 10 - 10,
+        },
+      ]);
+    } else {
+      orders = await Order.find({})
+        .populate("user")
+        .limit(10)
+        .skip(page * 10 - 10)
+        .sort("createdAt");
+    }
 
     return res.status(200).json(orders);
   } catch (error) {
